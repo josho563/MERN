@@ -1,0 +1,236 @@
+Index MongoDB
+
+CREATE: Creates a new database and starts using it Database not visible UNTIL they contain a collection.
+use "db_name"
+
+READ: To see all existing databases
+show dbs
+use "dbs_name"
+
+DELETE: Delete an existing database, works when using a database. 
+db.dropDatabase();
+
+
+MongoDB Collections
+
+CREATE:
+db.createCollection('name_of_collection');
+
+READ:
+show collections;
+
+DELETE:
+db.collection_name.drop();
+
+UPDATE:
+db.collection_name.renameCollection('new_name');
+
+
+MongoDB Structure Database
+
+Databases - Contain our Collections
+Collections - contain our documents
+Documents - Key Value Pairs (BSON) for our data
+
+WRITE COMMANDS IN A NOTEPAD / VSCODE / STICKY NOTE
+- Easier to see mistakes
+- Easier to copy and paste
+- Easier to write (Syntax Highlighting)
+
+CREATE:
+INSERT Command
+InsertOne - Adding 1 
+InsertMany - Adding Multiple
+
+Example
+db.Honda_Garage.insertOne(
+{
+"Model" : "S2000",
+"Number_Doors" : "3",
+"In_Garage" : "True",
+"Engine_Size" : 2,
+}
+);
+
+JSON Data Types (key pairs)
+-String 
+-Number
+-Boolean
+
+-Array Example
+"favFoood" : [
+"Crickets",
+"Kiwi",
+"Leaves"
+]
+
+-Array Example in practice
+db.Honda_Garage.insertOne(
+{
+"Model" : "S2000",
+"Number_Doors" : "3",
+"In_Garage" : "True",
+"Engine_Size" : 2,
+"Pedals" : [
+"Accelerate",
+"Brake",
+"Clutch",
+]
+}
+);
+
+
+Creating Mutiple Documents
+CREATE: insertMany([{data}, {data2}, {data3}]);
+
+CREATE: (Example)
+db.Honda_Garage.insertMany([
+{
+"Model" : "NSX",
+"Number_Doors" : "3",
+"In_Garage" : "False",
+"Pedals" : [
+"Accelerate",
+"Brake",
+"Clutch",
+]
+},
+{
+"Model" : "Civic",
+"Number_Doors" : "5",
+"In_Garage" : "False",
+"Radio" : "True",
+"Pedals" : [
+"Accelerate",
+"Brake",
+"Clutch",
+]
+},
+{
+"Model" : "E",
+"Number_Doors" : "5",
+"In_Garage" : "False",
+"Electric" : "True",
+"Pedals" : [
+"Accelerate",
+"Brake",
+]
+},
+]);
+
+READ:
+db.collection_name.find();
+.find(); =  (Returns everything)
+
+READ Example : Using Projection - telling MongoDB what fields we want to see
+if database has 100 documents with 20 key value pairs I want to see 2 of the key Value pairs across ALL DOCUEMTNS
+
+db.Honda_Garage.find(
+{},
+{
+"Model" : true,
+"Number_Doors" : true,
+"_id" : false
+}
+);
+
+simple queries to filter out data
+
+passing in a partial object if any document matches it returns it
+
+db.Honda_Garage.find(
+{
+ "Number_Doors" : "3"
+}
+);
+
+
+By default it finds all matches if you use 
+findOne(); = it will only will return the first instance
+
+db.Honda_Garage.findOne(
+{
+ "Number_Doors" : "3"
+}
+);
+
+
+Query Operators = used to check more then just does x = y 
+
+$gt = greaterThan
+$lt = LessThan
+$gte = GreaterThanOrEqual
+$lte = LessThanOrEqual
+$ne = NotEqual
+
+
+db.Honda_Garage.find(
+{
+"Engine_Size" : {"$gt" : 2}
+}
+);
+
+db.Honda_Garage.find(
+{
+"Engine_Size" : {"$ne" : "Civic"}
+}
+);
+
+
+READ:
+Queries for Arrays
+
+Is X a member of array Y or 
+Is Y in Y
+Is X not in y
+$in =  in 
+$nin = notIn
+
+db.Honda_Garage.find(
+{
+"Pedals" : {"$in" : [ "Clutch" ] }
+}
+);
+
+
+db.Honda_Garage.findOne(
+{
+"Pedals" : {"$nin" : [ "Clutch" ] }
+}
+);
+
+
+UPDATE:
+Rather than using find() we use update()
+We use $set to update field(s) 
+
+updateOne = updates one field
+
+db.Honda_Garage.updateOne(
+{
+"Model" : "S2000"
+},
+{
+"$set" : { "Model" : "S2000 GT" }
+}
+);
+
+UpdateMany = Updates all matching fields and adds wheels
+
+db.Honda_Garage.updateMany(
+{},
+{"$set" : { "wheels" : "4" }
+}
+);
+
+
+DELETE:
+deleteOne - Finds the first thing that matches
+db.Honda_Garage.deleteOne(
+{
+"Model" : { "$lt " : 1"
+});
+
+deleteMany - Finds all of them and delete
+
+db.Honda_Garage.deleteMany({}); = Will delete everything

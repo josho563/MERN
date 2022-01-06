@@ -1,0 +1,69 @@
+Embedded Documents
+
+Creating a single document or mutiple wiht insertMany)
+that contain a number of child documents
+
+Useful for parent child relations or one to many such as a animals and there habitats
+
+Embedded document example
+db.Jedi.insertOne(
+{
+"Jedi_Temple" : "Coruscant",
+"Jedi Master" : "Yoda",
+"Goverment" : 	"Galactic Republic",
+"Jedi" :
+{
+"name" : "Qui Gon Jinn",
+"lightsaber" : "Green",
+"Choosen_One" : "False"
+}	
+});
+
+
+
+Embedded Document with Array example
+db.Jedi.insertOne(
+{
+"Jedi_Temple" : "Coruscant",
+"Jedi Master" : "Yoda",
+"Goverment" : 	"Galactic Republic",
+"Jedi" : [
+{
+"name" : "Qui Gon Jinn",
+"lightsaber" : "Green",
+"Choosen_One" : "False",
+},
+{
+"name" : "Obi Wan Kenobi",
+"lightsaber" : "Blue",
+"Choosen_One" : "False",
+},
+{
+"name" : "Anakin Skywalker",
+"lightsaber" : "Green",
+"Choosen_One" : "True",
+},
+]
+});
+
+Embedded Document Update example updating array
+
+db.Jedi.updateOne(
+{
+  "Jedi_Temple" : "Coruscant"
+}, 
+{
+  "$set" : {
+    "Jedi" : [
+    {
+      "name" : "Count Dooku",
+      "lightsaber" : "Red"
+    },
+    {
+      "name" : "Kit Fisto",
+      "lightsaber" : "Green"
+    }
+   ]
+  }
+ }
+);
